@@ -5,7 +5,6 @@ import math
 # Create Tensors to hold input and outputs.
 x = torch.linspace(-math.pi, math.pi, 2000)
 y = torch.sin(x)
-
 # For this example, the output y is a linear function of (x, x^2, x^3), so
 # we can consider it as a linear layer neural network. Let's prepare the
 # tensor (x, x^2, x^3).

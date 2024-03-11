@@ -1,3 +1,34 @@
+################################################################'''
+'''
+Author: Dan Fiumara
+Usage Instructions:
+    1. Ensure that Pytorch is installed via the following tutorial:
+        - https://pytorch.org/get-started/locally/
+    2. Create a Python Virtual Environment via this command:
+        -   python3 -m venv [your-env-name]
+    3. Activate the Virtual Environment via this command:
+        -   source [your-env-name]/bin/activate
+    4. Install the required packages via the following commands:
+        - pip install matplotlib
+        - pip install pandas
+    5. At the commandline, run the following command:
+        - python3 nn.py
+
+Expected Output:
+    The proram will output a series of loss values as the neural network 
+    learns to proedict the output of a transimpedance amplifier. These loss
+    values should consistently decrease over time. This indicates that the 
+    network is successfully learning. The loss is in the form of a mean squared
+    error, which is a measure of the difference between the predicted and actual 
+    values in the current batch of data. This means that the square root of the loss
+    after each epoch is the average difference between the predicted and actual values.
+    The loss over time will be plotted in a graph after the training loop ends.
+    The first few hudred epochs will be ignored in the graph to better visualize our loss trends.
+    
+    After training is complete, the resulting model will be used to make a prediction on a new input. 
+    The expected output is 15000. The input is (5e8, 1.84e-6).
+'''
+################################################################
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
