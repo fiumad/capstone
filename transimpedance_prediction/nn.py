@@ -62,19 +62,19 @@ class TransimpedanceModel(nn.Module):
     def forward(self, x):
         return self.network(x)
 
-
 if __name__ == "__main__":
     dataset = SimulationData.TransimpedanceData()
     # Spot check the data
     print("Data Spot Check:")
     dataset.print_data(50)
-    dataloader = DataLoader(dataset, batch_size=16)  # , shuffle=True)
-    num_epochs = 2000
+    dataloader = DataLoader(dataset, batch_size=32)  # , shuffle=True)
+    num_epochs = 205
     loss_list = []
 
     model = TransimpedanceModel()
     loss_fn = nn.MSELoss()
-    learning_rate = 0.001556
+    #learning_rate = 0.001556
+    learning_rate = 0.035
 
     for epoch in range(num_epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -85,13 +85,21 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            if loss.item() > 1000:
-                learning_rate += 0.5e-5
         loss_list.append(loss.item())
-
-        if loss.item() < 4000:
+        #learning_rate = learning_rate + .0001 
+        if loss.item() < 4000 and loss.item() > 3000:
             learning_rate = learning_rate / 2
-        print(f"Epoch {epoch+1}, Loss: {loss.item()}")
+        if loss.item() < 600 and loss.item() > 400:
+            learning_rate = learning_rate / 1.25
+        if loss.item() < 400 and loss.item() > 200:
+            learning_rate = learning_rate / 1.5
+        if loss.item() < 200 and loss.item() > 100:
+            learning_rate = learning_rate / 1.75
+        if loss.item() < 100 and loss.item() > 50:
+            learning_rate = learning_rate / 2
+        #if loss.item() < 4000:
+            #learning_rate = learning_rate / 2
+        print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
     # torch.save(model.state_dict(), "model.pth")
 
     input_data = (5e8, 1.84e-6)
@@ -103,4 +111,4 @@ if __name__ == "__main__":
     model.eval()
     with torch.no_grad():
         output = model(input_tensor)
-        print(f"Input: {input_data}, Output: {output.item()}, Expected: 15000")
+        print(f"Input: {input_data}, Output: {output.item()}, Expected: ~ 15000")
