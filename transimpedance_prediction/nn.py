@@ -1,5 +1,5 @@
 ################################################################'''
-'''
+"""
 Author: Dan Fiumara
 Usage Instructions:
     1. Ensure that Pytorch is installed via the following tutorial:
@@ -27,7 +27,7 @@ Expected Output:
     
     After training is complete, the resulting model will be used to make a prediction on a new input. 
     The expected output is 15000. The input is (5e8, 1.84e-6).
-'''
+"""
 ################################################################
 import torch
 from torch import nn
@@ -35,9 +35,9 @@ from torch.utils.data import DataLoader
 import data as SimulationData
 import matplotlib.pyplot as plt
 
-# device = "cuda" if torch.cuda.is_available() else "cpu"
-# torch.set_default_device(device)
-# print(f"Using {device} device")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+torch.set_default_device(device)
+print(f"Using {device} device")
 
 
 def plot_losses(loss_list):
@@ -62,18 +62,19 @@ class TransimpedanceModel(nn.Module):
     def forward(self, x):
         return self.network(x)
 
+
 if __name__ == "__main__":
     dataset = SimulationData.TransimpedanceData()
     # Spot check the data
     print("Data Spot Check:")
     dataset.print_data(50)
     dataloader = DataLoader(dataset, batch_size=32)  # , shuffle=True)
-    num_epochs = 205
+    num_epochs = 355
     loss_list = []
 
     model = TransimpedanceModel()
     loss_fn = nn.MSELoss()
-    #learning_rate = 0.001556
+    # learning_rate = 0.001556
     learning_rate = 0.035
 
     for epoch in range(num_epochs):
@@ -86,7 +87,7 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
         loss_list.append(loss.item())
-        #learning_rate = learning_rate + .0001 
+        # learning_rate = learning_rate + .0001
         if loss.item() < 4000 and loss.item() > 3000:
             learning_rate = learning_rate / 2
         if loss.item() < 600 and loss.item() > 400:
@@ -95,10 +96,10 @@ if __name__ == "__main__":
             learning_rate = learning_rate / 1.5
         if loss.item() < 200 and loss.item() > 100:
             learning_rate = learning_rate / 1.75
-        if loss.item() < 100 and loss.item() > 50:
-            learning_rate = learning_rate / 2
-        #if loss.item() < 4000:
-            #learning_rate = learning_rate / 2
+        if loss.item() < 100 and learning_rate > 0.0002:
+            learning_rate -= learning_rate * 0.4
+        # if loss.item() < 4000:
+        # learning_rate = learning_rate / 2
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
     # torch.save(model.state_dict(), "model.pth")
 
@@ -106,7 +107,7 @@ if __name__ == "__main__":
     input_tensor = torch.tensor(input_data, dtype=torch.float)
 
     # Plot the loss
-    plot_losses(loss_list[220:])
+    plot_losses(loss_list[10:])
 
     model.eval()
     with torch.no_grad():
