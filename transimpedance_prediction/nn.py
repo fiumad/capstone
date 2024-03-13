@@ -98,6 +98,8 @@ if __name__ == "__main__":
             learning_rate = learning_rate / 1.75
         if loss.item() < 100 and learning_rate > 0.0002:
             learning_rate -= learning_rate * 0.4
+        if loss.item() < 40 and loss.item() > 30:
+            learning_rate = learning_rate / 2
         # if loss.item() < 4000:
         # learning_rate = learning_rate / 2
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
