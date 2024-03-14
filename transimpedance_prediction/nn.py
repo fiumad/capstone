@@ -47,7 +47,8 @@ def plot_losses(loss_list):
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.grid(True)
-    plt.show()
+    #plt.show()
+    plt.savefig("loss.png")
 
 
 class TransimpedanceModel(nn.Module):
@@ -77,6 +78,7 @@ if __name__ == "__main__":
     # learning_rate = 0.001556
     learning_rate = 0.035
 
+    last_five = []
     for epoch in range(num_epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
         for batch in dataloader:
@@ -103,15 +105,26 @@ if __name__ == "__main__":
         # if loss.item() < 4000:
         # learning_rate = learning_rate / 2
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
-    # torch.save(model.state_dict(), "model.pth")
+        last_five.append(loss.item())
+        if len(last_five) > 5:
+            last_five.pop(0)
+        if len(last_five) == 5 and all(i < 2000 for i in last_five):
+            break
 
     input_data = (5e8, 1.84e-6)
     input_tensor = torch.tensor(input_data, dtype=torch.float)
 
+    input_data1 = (100, 1.84e-6)
+    input_tensor1 = torch.tensor(input_data1, dtype=torch.float)
     # Plot the loss
     plot_losses(loss_list[10:])
+
 
     model.eval()
     with torch.no_grad():
         output = model(input_tensor)
+        output1 = model(input_tensor1)
         print(f"Input: {input_data}, Output: {output.item()}, Expected: ~ 15000")
+        print(f"Input: {input_data1}, Output: {output1.item()}, Expected: 14680")
+
+    torch.save(model.state_dict(), "model.pth")
