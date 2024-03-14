@@ -33,6 +33,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 import data as SimulationData
+import TIModel as t
 import matplotlib.pyplot as plt
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -50,20 +51,6 @@ def plot_losses(loss_list):
     #plt.show()
     plt.savefig("loss.png")
 
-
-class TransimpedanceModel(nn.Module):
-    def __init__(self):
-        super(TransimpedanceModel, self).__init__()
-        self.network = nn.Sequential(
-            nn.Linear(2, 64),
-            nn.ReLU(),
-            nn.Linear(64, 1),
-        )
-
-    def forward(self, x):
-        return self.network(x)
-
-
 if __name__ == "__main__":
     dataset = SimulationData.TransimpedanceData()
     # Spot check the data
@@ -73,7 +60,7 @@ if __name__ == "__main__":
     num_epochs = 355
     loss_list = []
 
-    model = TransimpedanceModel()
+    model = t.TransimpedanceModel()
     loss_fn = nn.MSELoss()
     # learning_rate = 0.001556
     learning_rate = 0.035
