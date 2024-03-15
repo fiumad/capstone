@@ -2,16 +2,8 @@
 """
 Author: Dan Fiumara
 Usage Instructions:
-    1. Ensure that Pytorch is installed via the following tutorial:
-        - https://pytorch.org/get-started/locally/
-    2. Create a Python Virtual Environment via this command:
-        -   python3 -m venv [your-env-name]
-    3. Activate the Virtual Environment via this command:
-        -   source [your-env-name]/bin/activate
-    4. Install the required packages via the following commands:
-        - pip install matplotlib
-        - pip install pandas
-    5. At the commandline, run the following command:
+    1. Ensure that your development ievironment is set up according to README.md
+    2. At the commandline, run the following command:
         - python3 nn.py
 
 Expected Output:
