@@ -9,7 +9,9 @@ Usage Instructions:
         python3 -m venv [your-env-name]
         ```
     2. Activate the Virtual Environment via this command:
-        -   source [your-env-name]/bin/activate
+        ```
+        source [your-env-name]/bin/activate
+        ```
     3. Install the required packages via the following command:
       ```
         pip install -r requirements.txt
