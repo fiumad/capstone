@@ -40,8 +40,9 @@ def plot_losses(loss_list):
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.grid(True)
-    #plt.show()
+    # plt.show()
     plt.savefig("loss.png")
+
 
 if __name__ == "__main__":
     dataset = SimulationData.TransimpedanceData()
@@ -87,7 +88,8 @@ if __name__ == "__main__":
         last_five.append(loss.item())
         if len(last_five) > 5:
             last_five.pop(0)
-        if len(last_five) == 5 and all(i < 2000 for i in last_five):
+        if len(last_five) == 5 and all(i < 40 for i in last_five):
+            print("Final Training Loss: ", loss.item())
             break
 
     input_data = (5e8, 1.84e-6)
@@ -98,7 +100,6 @@ if __name__ == "__main__":
     # Plot the loss
     plot_losses(loss_list[10:])
 
-
     model.eval()
     with torch.no_grad():
         output = model(input_tensor)
@@ -106,4 +107,4 @@ if __name__ == "__main__":
         print(f"Input: {input_data}, Output: {output.item()}, Expected: ~ 15000")
         print(f"Input: {input_data1}, Output: {output1.item()}, Expected: 14680")
 
-    torch.save(model.state_dict(), "model.pth")
+    torch.save(model, "model.pth")

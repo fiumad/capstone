@@ -4,18 +4,18 @@ import torch
 
 class TransimpedanceData:
     def __init__(self):
-        #self.raw_data = pd.read_csv("TransimpedanceData.csv")
+        # self.raw_data = pd.read_csv("TransimpedanceData.csv")
         self.raw_data = pd.read_csv("TransimpedanceDataV2.csv")
         self.data = []
         self.inputs = []
         self.targets = []
         # save the data from the csv file into a list of lists with the format [[frequency, wn, transimpedance]]
         for i in range(len(self.raw_data)):
-            for j in range(321): # was 41
+            for j in range(321):  # was 41
                 self.data.append(
                     [
                         float(self.raw_data.iloc[i, 0]),
-                        float(self.raw_data.columns[j + 1][28:]), # added [28:]
+                        float(self.raw_data.columns[j + 1][28:]),  # added [28:]
                         float(self.raw_data.iloc[i, j + 1]),
                     ]
                 )
