@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def makePrediction(frequency, width):
-    model = torch.load("model.pth")
+    model = torch.load("model.pth", map_location=torch.device("cpu"), weights_only=True)
 
     model.eval()
 
@@ -58,7 +58,8 @@ def benchmark(width):
     plt.title("Actual vs Predicted Transimpedance")
     plt.legend()
     plt.grid(True, which="both", linestyle="--")
-    plt.show()
+    #plt.show()
+    plt.savefig("Benchmark.png")
 
     sqError = 0
     for i in range(len(predictions)):
