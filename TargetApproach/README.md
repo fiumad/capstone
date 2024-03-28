@@ -1,4 +1,4 @@
-# Transimpedance Prediction Model
+# Differential Amplifier Design Prediction Model
 
 
 Author: Dan Fiumara
