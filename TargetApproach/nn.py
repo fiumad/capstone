@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     model = t.TransimpedanceModel()
     loss_fn = nn.MSELoss()
-    learning_rate = 0.0005
+    learning_rate = 0.01
 
     for epoch in range(num_epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
