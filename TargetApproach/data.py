@@ -11,11 +11,11 @@ class TransimpedanceData:
         self.gain_data = []
         self.power_data = []
         self.bandwidth_data = []
-
+        self.data = []
         self.inputs = []
         self.targets = []
 
-        # save the data from the csv file into a list of lists with the format [[frequency, wn, transimpedance]]
+        # save the data from the csv file into a list of lists with the format [[wn, load resistance, tail width, transimpedance]]
         for i in range(len(self.raw_gain_data)):
             for j in range(625):  # was 41
                 col_title = self.raw_gain_data.columns[j + 1].split(" ")
@@ -23,31 +23,15 @@ class TransimpedanceData:
                 # input("Press Enter to continue...")
                 self.gain_data.append(
                     [
-                        float(self.raw_gain_data.iloc[i, 0]),  # input width
-                        # float(self.raw_gain_data.columns[j + 1][27:34]),  # tail width
-                        float(col_title[4]),
-                        float(
-                            # self.raw_gain_data.columns[j + 1][38:]
-                            col_title[2]
-                        ),  # strip the column name to get the tail width
+                        float(col_title[6]),  # input width
+                        float(col_title[8]),  # load resistance
+                        float(self.raw_gain_data.iloc[i, 0]),  # tail width
                         float(self.raw_gain_data.iloc[i, j + 1]),  # transimpedance
                     ]
                 )
-        # save the inputs and targets into separate lists
-        for i in range(len(self.gain_data)):
-            # Inputs: [Input Width, Load Resistance, Tail Width]
-            self.inputs.append(
-                [self.gain_data[i][0], self.gain_data[i][1], self.gain_data[i][2]]
-            )
-
-            # Targets: [Transimpedance]
-            self.targets.append(self.gain_data[i][3])
-
         # ingest power data
-        # TODO: Replace with data that sweeps input width
-        # For now, use 2u
         for i in range(len(self.raw_power_data)):
-            for j in range(25):
+            for j in range(625):
                 col_title = self.raw_power_data.columns[j + 1].split(" ")
                 # print(col_title)
                 # input("Press Enter to continue...")
@@ -55,10 +39,10 @@ class TransimpedanceData:
                 self.power_data.append(
                     [
                         # [Input Width, Load Resistance, Tail Width, Power]
-                        2.0e-6,
-                        float(col_title[5]),
-                        self.raw_power_data.iloc[i, 0],
-                        float(self.raw_power_data.iloc[i, j + 1]),
+                        float(col_title[5]),  # wn
+                        float(col_title[7]),  # load resistance
+                        float(self.raw_power_data.iloc[i, 0]),  # tail width
+                        float(self.raw_power_data.iloc[i, j + 1]),  # power
                     ]
                 )
 
@@ -71,18 +55,34 @@ class TransimpedanceData:
                 # input("Press Enter to continue...")
                 self.bandwidth_data.append(
                     [
-                        float(
-                            # self.raw_bandwidth_data.columns[j + 1][50:58]
-                            col_title[5]
-                        ),  # input width
-                        float(
-                            # self.raw_bandwidth_data.columns[j + 1][62:]
-                            col_title[7]
-                        ),  # Load Resistance
+                        float(col_title[5]),  # input width
+                        float(col_title[7]),  # Load Resistance
                         float(self.raw_bandwidth_data.iloc[i, 0]),  # tail width
                         float(self.raw_bandwidth_data.iloc[i, j + 1]),  # bandwidth
                     ]
                 )
+
+        # zip the data together such that the tensors to be fed into the model
+        # are in the format [input width, load resistance, tail width, gain, bandwidth, power]
+        print(len(self.gain_data), len(self.bandwidth_data), len(self.power_data))
+        for i in range(len(self.gain_data)):
+            tempi = []
+            temp = []
+
+            tempi.append(self.gain_data[i][0])  # input width
+            tempi.append(self.gain_data[i][1])  # load resistance
+            tempi.append(self.gain_data[i][2])  # tail width
+
+            temp.append(self.gain_data[i][3])  # gain
+            temp.append(self.bandwidth_data[i][3])  # bandwidth
+            temp.append(self.power_data[i][3])  # power
+
+            self.data.append([tempi, temp])
+
+        # split the data into inputs and targets
+        for i in range(len(self.data)):
+            self.inputs.append(self.data[i][0])
+            self.targets.append(self.data[i][1])
 
     def __len__(self):
         return len(self.data)
@@ -113,3 +113,7 @@ if __name__ == "__main__":
     if input("Print power data? (y/n) ") == "y":
         for i in range(len(data.power_data)):
             print(data.power_data[i])
+
+    if input("Print data? (y/n) ") == "y":
+        for i in range(len(data.data)):
+            print(data.data[i])
