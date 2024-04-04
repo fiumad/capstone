@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     model = t.TransimpedanceModel()
     loss_fn = nn.MSELoss()
-    learning_rate = 0.01
+    learning_rate = 0.03
 
     for epoch in range(num_epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -68,6 +68,12 @@ if __name__ == "__main__":
             optimizer.step()
         loss_list.append(loss.item())
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
+        if loss.item() < 3e6 and loss.item() > 2.9e6:
+            learning_rate += 0.025
+
+        if len(loss_list) > 3:
+            if loss_list[-1] == loss_list[-2] == loss_list[-3]:
+                learning_rate *= 1.25
 
     # Plot the loss
     plot_losses(loss_list[10:])
