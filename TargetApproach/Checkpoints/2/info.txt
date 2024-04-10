@@ -1,0 +1,12 @@
+Same as checkpoint 1
+
+but,
+when loss < .058 drop by a factor of 10 one time
+
+then,
+when loss increases by any amount, drop by a factor of 10
+
+stop when 3 epochs result in same loss
+
+
+Final loss: .040458

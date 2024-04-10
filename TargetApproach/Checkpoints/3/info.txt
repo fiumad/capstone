@@ -1,0 +1,3 @@
+Only stop early if loss is below .03
+
+Final Loss: 0.037032660096883774

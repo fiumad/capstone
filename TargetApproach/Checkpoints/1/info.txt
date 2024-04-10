@@ -1,0 +1,6 @@
+lr = 1.38e-7
+epochs: 4000
+batch_size = 32
+
+Architecture:
+3 -> 256 -> 3

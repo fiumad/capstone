@@ -66,16 +66,16 @@ class TransimpedanceData:
         # are in the format [input width, load resistance, tail width, gain, bandwidth, power]
         print(len(self.gain_data), len(self.bandwidth_data), len(self.power_data))
         for i in range(len(self.gain_data)):
-            tempi = [] # circuit parameters
-            temp = [] # circuit performance
+            tempi = []  # circuit parameters
+            temp = []  # circuit performance
 
-            tempi.append(self.gain_data[i][0])  # input width
-            tempi.append(self.gain_data[i][1])  # load resistance
-            tempi.append(self.gain_data[i][2])  # tail width
+            tempi.append(self.gain_data[i][0] * 1000000)  # input width
+            tempi.append(self.gain_data[i][1] / 10000)  # load resistance
+            tempi.append(self.gain_data[i][2] * 1000000)  # tail width
 
-            temp.append(self.gain_data[i][3])  # gain
-            temp.append(self.bandwidth_data[i][3])  # bandwidth
-            temp.append(self.power_data[i][3])  # power
+            temp.append(self.gain_data[i][3] / 10000)  # gain normalized
+            temp.append(self.bandwidth_data[i][3] / 10000000000)  # bandwidth normalized
+            temp.append(self.power_data[i][3] * 100)  # power normalized
 
             self.data.append([temp, tempi])
 
