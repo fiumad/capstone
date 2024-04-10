@@ -72,7 +72,7 @@ if __name__ == "__main__":
         if loss.item() < 0.058 and first:
             learning_rate = 1.38e-8
             first = False
-        if not first and loss.item() > loss_list[-2]:
+        if not first and loss.item() > loss_list[-2] and loss_list[-2] > loss_list[-3]:
             learning_rate /= 10
 
         if (
