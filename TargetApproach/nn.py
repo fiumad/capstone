@@ -69,15 +69,15 @@ if __name__ == "__main__":
             optimizer.step()
         loss_list.append(loss.item())
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
-        if loss.item() < 0.058 and first:
-            learning_rate = 1.38e-8
+        if loss.item() < 0.04 and first:
+            learning_rate /= 5
             first = False
         if not first and loss.item() > loss_list[-2] and loss_list[-2] > loss_list[-3]:
-            learning_rate /= 10
+            learning_rate /= 2
 
         if (
             not first
-            and loss.item() < 0.03
+            and loss.item() < 0.02
             and loss_list[-1] == loss_list[-2] == loss_list[-3]
         ):
             break
