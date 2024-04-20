@@ -5,16 +5,18 @@ import data
 import matplotlib.pyplot as plt
 
 
-def makePrediction(frequency, width):
-    model = torch.load("model.pth", map_location=torch.device("cpu"), weights_only=True)
+def makePrediction(gain, bandwidth, power):
+    model = torch.load("./Checkpoints/4/model.pth")
 
     model.eval()
 
     with torch.no_grad():
-        input_data = (frequency, width)
+        input_data = (gain, bandwidth, power)
         input_tensor = torch.tensor(input_data, dtype=torch.float)
         output = model(input_tensor)
-        print(f"Input: {input_data}, Output: {output.item()}")
+        print(
+            f"Input: {input_data}, Input Width: {output[0].item() / 1000000}, Load Resistance: {output[1].item() * 10000}, Tail Width: {output[2].item() / 1000000}"
+        )  # was output.item()
 
 
 def benchmark(width):
@@ -58,7 +60,7 @@ def benchmark(width):
     plt.title("Actual vs Predicted Transimpedance")
     plt.legend()
     plt.grid(True, which="both", linestyle="--")
-    #plt.show()
+    # plt.show()
     plt.savefig("Benchmark.png")
 
     sqError = 0
@@ -69,4 +71,9 @@ def benchmark(width):
 
 
 if __name__ == "__main__":
-    benchmark(2e-6)
+    # benchmark(2e-6)
+    while True:
+        gain = float(input("Enter Target Gain (V/A): ")) / 10000
+        bandwidth = float(input("Enter Target Bandwidth (Hz): ")) / 10000000000
+        power = float(input("Enter Target Tail Current (A): ")) * 100
+        makePrediction(gain, bandwidth, power)
