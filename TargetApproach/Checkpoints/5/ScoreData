@@ -1,0 +1,39 @@
+Trial 1
+Gain: 12000 BW: 10G Power: .00095
+Wn: 1.6634u LR: 8056 Ohms Wt: 809nm
+Actual: Gain: 7168 BW: 31G Power: .001002
+Scores: Gain: 58 BW: 76 Power: 98
+--------------------------------------------------
+Trial 2
+Gain: 15000 BW: 7G  Power: .00105
+Wn: 1.793u  LR: 9066 Wt: 901nm
+Actual: Gain: 9658 BW: 20.23G Power: .001022
+Scores: Gain: 72 BW: 70 Power: 101
+--------------------------------------------------
+Trial 3
+Gain: 10000 BW: 25G Power: .001
+Wn: 2.206u  LR: 10803 Wt: 982nm
+Actual: Gain: 12000 BW: 16.29G Power: .001038
+Scores: Gain: 103 BW: 98 Power: 98
+--------------------------------------------------
+Trial 4
+Gain: 16000 BW: 27G Power: .001
+Wn: 2.664u LR: 13277 Wt: 1.21u
+Actual: Gain: 22000 BW: 5.43G Power: .001069
+Scores: Gain: 104 BW: 76 Power: 97
+--------------------------------------------------
+Trial 5
+Gain: 16000 BW: 6G Power: .00095
+Wn: 1.846u LR: 9511 Wt: 939nm
+Actual: Gain: 10760 BW: 16.54G Power: .00103
+Scores: Gain: 78 BW: 68 Power: 96
+--------------------------------------------------
+Trial 6
+Gain: 14000 BW: 10G Power: .001
+Wn: 1.815u LR: 8880 Wt: 887nm
+Actual: Gain: 9225 BW: 22.33G Power: .001019
+Scores: Gain: 75 BW: 88 Power: 99
+
+
+
+
