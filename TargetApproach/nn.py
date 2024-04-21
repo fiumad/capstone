@@ -2,23 +2,23 @@
 """
 Author: Dan Fiumara
 Usage Instructions:
-    1. Ensure that your development ievironment is set up according to README.md
+    1. Ensure that your development environment is set up according to README.md
     2. At the commandline, run the following command:
         - python3 nn.py
 
 Expected Output:
-    The proram will output a series of loss values as the neural network 
-    learns to proedict the output of a transimpedance amplifier. These loss
-    values should consistently decrease over time. This indicates that the 
+    The program will output a series of loss values as the neural network 
+    learns the relationship between key circuit parameters and the performance characteristics of the TIA. 
+    These loss values should consistently decrease over time. This indicates that the 
     network is successfully learning. The loss is in the form of a mean squared
     error, which is a measure of the difference between the predicted and actual 
     values in the current batch of data. This means that the square root of the loss
     after each epoch is the average difference between the predicted and actual values.
     The loss over time will be plotted in a graph after the training loop ends.
-    The first few hudred epochs will be ignored in the graph to better visualize our loss trends.
     
-    After training is complete, the resulting model will be used to make a prediction on a new input. 
-    The expected output is 15000. The input is (5e8, 1.84e-6).
+    After training is complete, the resulting model will be saved and if the loss is low enough,
+    the model.pth file will be moved to a new folder in the checkpoints folder where it can be 
+    accessed later for making predictions and benchmarking.
 """
 ################################################################
 import torch
@@ -45,10 +45,11 @@ def plot_losses(loss_list):
 
 
 if __name__ == "__main__":
-    dataset = SimulationData.TransimpedanceData()
-    # Spot check the data
+    dataset = SimulationData.CircuitData()
+    # Spot check the data to ensure it was loaded correctly
     print("Data Spot Check:")
     dataset.print_data(50)
+
     dataloader = DataLoader(dataset, batch_size=32)  # , shuffle=True)
     num_epochs = 4000
     loss_list = []
@@ -71,6 +72,7 @@ if __name__ == "__main__":
             optimizer.step()
         loss_list.append(loss.item())
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
+
         """
         if loss.item() < 0.07 and first:
             learning_rate /= 10

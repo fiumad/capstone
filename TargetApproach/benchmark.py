@@ -20,13 +20,13 @@ def makePrediction(gain, bandwidth, power):
 
 
 def benchmark(width):
-    TIData = data.TransimpedanceData()
+    CData = data.CircuitData()
     model = torch.load("model.pth")
     model.eval()
     predictions = []
     input_list = []
     output_list = []
-    for point in TIData.data:
+    for point in CData.data:
         if point[1] == width:
             with torch.no_grad():
                 input_data = (

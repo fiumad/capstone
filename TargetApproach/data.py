@@ -2,9 +2,8 @@ import pandas as pd
 import torch
 
 
-class TransimpedanceData:
+class CircuitData:
     def __init__(self):
-        # self.raw_data = pd.read_csv("TransimpedanceData.csv")
         self.raw_gain_data = pd.read_csv("gain.csv")
         self.raw_power_data = pd.read_csv("power.csv")
         self.raw_bandwidth_data = pd.read_csv("bandwidth.csv")
@@ -101,19 +100,19 @@ class TransimpedanceData:
 
 
 if __name__ == "__main__":
-    data = TransimpedanceData()
-    if input("Print gain data? (y/n) ") == "y":
+    data = CircuitData()
+    if input("Print cleaned gain data? (y/n) ") == "y":
         for i in range(len(data.gain_data)):
             print(data.gain_data[i])
 
-    if input("Print bandwidth data? (y/n) ") == "y":
+    if input("Print cleaned bandwidth data? (y/n) ") == "y":
         for i in range(len(data.bandwidth_data)):
             print(data.bandwidth_data[i])
 
-    if input("Print power data? (y/n) ") == "y":
+    if input("Print cleaned power data? (y/n) ") == "y":
         for i in range(len(data.power_data)):
             print(data.power_data[i])
 
-    if input("Print data? (y/n) ") == "y":
+    if input("Print all cleaned data? (y/n) ") == "y":
         for i in range(len(data.data)):
             print(data.data[i])
