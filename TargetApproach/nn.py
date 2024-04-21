@@ -57,6 +57,8 @@ if __name__ == "__main__":
     loss_fn = nn.MSELoss()
     learning_rate = 1.38e-7
     first = True
+    second = True
+    third = True
 
     for epoch in range(num_epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -69,15 +71,18 @@ if __name__ == "__main__":
             optimizer.step()
         loss_list.append(loss.item())
         print(f"Epoch {epoch+1}, Loss: {loss.item()}, LR: {learning_rate}")
-        if loss.item() < 0.04 and first:
-            learning_rate /= 5
+        """
+        if loss.item() < 0.07 and first:
+            learning_rate /= 10
             first = False
-        if not first and loss.item() > loss_list[-2] and loss_list[-2] > loss_list[-3]:
-            learning_rate /= 2
 
+        if not first and loss.item() > loss_list[-2] and loss_list[-2] > loss_list[-3]:
+            learning_rate /= 1.25
+
+        """
         if (
             not first
-            and loss.item() < 0.02
+            and loss.item() < 0.024
             and loss_list[-1] == loss_list[-2] == loss_list[-3]
         ):
             break
